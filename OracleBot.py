@@ -1,5 +1,6 @@
 import io
 import os
+from datetime import datetime
 
 import discord
 from discord.ext import commands
@@ -35,7 +36,7 @@ async def GetPackageDiff(ctx, package_name: str):
     else:
         f = io.StringIO(diff)
 
-        filename = f'{package_name}_DIFF_{GeneralUtils.GetDateStr()}.txt'
+        filename = f'{package_name}_DIFF_{GeneralUtils.GetDateStr(datetime.now())}.txt'
         Logger.Log(f'{filename} is generated.', str(ctx.message.author))
 
         await ctx.send(file=discord.File(f, filename=filename))
@@ -46,7 +47,7 @@ async def GetTestPackage(ctx, package_name: str):
     package_name = package_name.upper()
 
     file = io.StringIO(OracleConn.GetTestPackage(package_name))
-    filename = f'{package_name}_TEST_{GeneralUtils.GetDateStr()}.txt'
+    filename = f'{package_name}_TEST_{GeneralUtils.GetDateStr(datetime.now())}.txt'
     Logger.Log(f'{filename} is generated.', str(ctx.message.author))
 
     await ctx.send(file=discord.File(file, filename=filename))
@@ -57,8 +58,8 @@ async def GetProdPackage(ctx, package_name: str):
     package_name = package_name.upper()
 
     file = io.StringIO(OracleConn.GetProdPackage(package_name))
-    filename = f'{package_name}_PROD_{GeneralUtils.GetDateStr()}.txt'
-    LLogger.Log(f'{filename} is generated.', str(ctx.message.author))
+    filename = f'{package_name}_PROD_{GeneralUtils.GetDateStr(datetime.now())}.txt'
+    Logger.Log(f'{filename} is generated.', str(ctx.message.author))
 
     await ctx.send(file=discord.File(file, filename=filename))
 

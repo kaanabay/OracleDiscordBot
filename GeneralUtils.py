@@ -1,9 +1,9 @@
 from datetime import datetime
 
 
-def GetDateStr(dateTime=datetime.now()):
+def GetDateStr(dateTime):
     return dateTime.strftime('%Y%m%d%H%M%S')
 
 
-def GetDateStrPretty(dateTime=datetime.now()):
+def GetDateStrPretty(dateTime):
     return dateTime.strftime('%d.%m.%Y %H:%M:%S')
