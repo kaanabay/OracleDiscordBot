@@ -19,6 +19,12 @@ async def on_ready():
     print(f'{BOT.user.name} has connected to Discord')
 
 
+@BOT.event
+async def on_command_error(ctx, error):
+    if isinstance(error, discord.ext.commands.MissingRequiredArgument):
+        await ctx.send("A parameter is missing")
+
+
 @BOT.command(name='gdiff', help='Verilen paketin prod ve test ortamları arasındaki farklarını bulur.')
 async def GetPackageDiff(ctx, package_name: str):
 
@@ -62,6 +68,19 @@ async def GetProdPackage(ctx, package_name: str):
     Logger.Log(f'{filename} is generated.', str(ctx.message.author))
 
     await ctx.send(file=discord.File(file, filename=filename))
+
+
+@BOT.command(name='ginv', help='Prod ortamındaki invalid paketleri sorgular.')
+async def GetInvalidPackages(ctx):
+    invalidList = OracleConn.GetInvalidPackages()
+    newLine = '\n'
+    queryTime = GeneralUtils.GetDateStrPretty(datetime.now())
+    if invalidList:
+        msg = f'**Invalid Packages as of {queryTime}**```{newLine}{newLine.join(invalidList)}```'
+    else:
+        msg = 'Bütün paketlerin durumu iyi maşallah.'
+    await ctx.send(msg)
+
 
 load_dotenv()
 BOT.run(os.getenv('DISCORD_TOKEN'))
